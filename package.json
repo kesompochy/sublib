@@ -1,0 +1,22 @@
+{
+  "name": "@kesompochy/sublib",
+  "version": "0.0.1",
+  "description": "Local subtree dev setup: git subtree + bundler(Vite) integration",
+  "type": "module",
+  "scripts": {
+    "build": "bun build ./src/**/*.ts --outdir=dist && bun build ./bin/sublib.ts --outfile=dist/bin/sublib.js",
+    "test": "bun test"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./vite": "./dist/vite.js"
+  },
+  "bin": {
+    "sublib": "./bin/sublib.ts"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kesompochy/sublib.git"
+  }
+}

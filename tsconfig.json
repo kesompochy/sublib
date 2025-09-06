@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "declaration": true,
+    "outDir": "dist",
+    "skipLibCheck": true,
+    "types": ["bun-types"],
+    "esModuleInterop": true
+  },
+  "include": ["src", "bin", "test"]
+}
