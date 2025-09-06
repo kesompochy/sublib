@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "bun build ./src/**/*.ts --outdir=dist && bun build ./bin/sublib.ts --outfile=dist/bin/sublib.js",
-    "test": "bun test"
+    "test": "bun test",
+    "postinstall": "bun build ./src/index.ts --outdir=dist && bun build ./src/vite.ts --outfile=dist/vite.js"
   },
   "exports": {
     ".": "./dist/index.js",
