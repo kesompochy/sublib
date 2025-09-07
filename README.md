@@ -2,6 +2,22 @@
 
 Local subtree dev setup: git subtree + bundler integration.
 
+## TypeScript paths (auto-generation)
+
+- On install and on `sublib add <name>`, this tool generates `./tsconfig.sublib.json` at your repository root.
+- The file contains `compilerOptions.baseUrl = "."` and `paths` for all libs declared in `package.json > sublib.libs` (relative paths under `vendor/`).
+- Add one line to your project `tsconfig.json`:
+
+```
+{
+  "extends": "./tsconfig.sublib.json"
+}
+```
+
+- After this, `tsc` and your IDE resolve imports like `egak.js` / `ugocas.js` directly to `vendor/*` sources.
+
+ 
+
 ## CLI (Bun)
 
 - Global link (dev):
@@ -9,6 +25,8 @@ Local subtree dev setup: git subtree + bundler integration.
   - Then use `sublib <add|pull|push> <name>`
 - Global install (after publishing):
   - `bun add -g @kesompochy/sublib`
+ - Manual regenerate:
+   - `sublib gen` to (re)generate `./tsconfig.sublib.json` after editing `package.json > sublib.libs`
 
 ## Vite plugin
 
