@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "bun build ./src/**/*.ts --outdir=dist && bun build ./bin/sublib.ts --outfile=dist/bin/sublib.js",
+    "postinstall": "bun ./src/postinstall.ts",
     "test": "bun test",
     "prepare": "bun build src/index.ts --target=node --format=esm --external:node:* --outdir=dist && bun build src/vite.ts --target=node --format=esm --external:node:* --external:vite --outfile=dist/vite.js"
   },
