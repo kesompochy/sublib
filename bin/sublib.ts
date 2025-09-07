@@ -1,12 +1,11 @@
 #!/usr/bin/env bun
 import { spawnSync } from 'node:child_process';
-import path from 'node:path';
-import fs from 'node:fs';
 import { gitSubtreeArgs, readConfig } from '../src/index';
+import { generateForConsumer } from '../src/tsconfig_paths';
 
-const run = (args: string[]) => {
+const runGit = (args: string[]): number => {
   const r = spawnSync('git', args, { stdio: 'inherit' });
-  process.exit(r.status === null ? 1 : r.status);
+  return r.status === null ? 1 : r.status;
 };
 
 const main = () => {
@@ -16,7 +15,16 @@ const main = () => {
     process.exit(1);
   }
   const cfg = readConfig();
-  run(gitSubtreeArgs(subcmd as any, name, cfg));
+  const code = runGit(gitSubtreeArgs(subcmd as any, name, cfg));
+  if (code === 0 && subcmd === 'add') {
+    try {
+      const out = generateForConsumer(process.cwd());
+      console.log(`[sublib] updated ${out}`);
+    } catch (e: any) {
+      console.warn('[sublib] paths generation failed:', e?.message || e);
+    }
+  }
+  process.exit(code);
 };
 
 main();
