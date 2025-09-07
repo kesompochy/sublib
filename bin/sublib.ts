@@ -10,7 +10,20 @@ const runGit = (args: string[]): number => {
 
 const main = () => {
   const [, , subcmd, name] = process.argv;
-  if (!subcmd || !name) {
+  if (!subcmd) {
+    console.error('Usage: sublib <add|pull|push> <name> | sublib gen');
+    process.exit(1);
+  }
+  if (subcmd === 'gen') {
+    try {
+      const out = generateForConsumer(process.cwd());
+      console.log(`[sublib] generated ${out}`);
+      } catch (e: any) {
+      console.warn('[sublib] paths generation failed:', e?.message || e);
+    }
+    process.exit(0);
+  }
+  if (!name) {
     console.error('Usage: sublib <add|pull|push> <name>');
     process.exit(1);
   }

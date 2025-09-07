@@ -45,4 +45,18 @@ exit 0
     expect(json.compilerOptions.baseUrl).toBe(cwd);
     expect(Object.keys(json.compilerOptions.paths)).toContain('egak.js');
   });
+  it('runs manual generation via "sublib gen"', () => {
+    const cwd = fs.mkdtempSync(path.join(os.tmpdir(), 'sublib-gen-'));
+    fs.writeFileSync(path.join(cwd, 'package.json'), JSON.stringify({
+      name: 'tmp',
+      sublib: { root: 'vendor', libs: { 'ugocas.js': {} } },
+    }));
+    const libDir = path.join(cwd, 'vendor', 'ugocas.js');
+    fs.mkdirSync(libDir, { recursive: true });
+
+    const bin = path.resolve(__dirname, '..', 'bin', 'sublib.ts');
+    const r = spawnSync('bun', [bin, 'gen'], { cwd });
+    expect(r.status).toBe(0);
+    expect(fs.existsSync(path.join(cwd, 'tsconfig.sublib.json'))).toBe(true);
+  });
 });
