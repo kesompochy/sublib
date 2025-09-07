@@ -53,11 +53,12 @@ describe('tsconfig_paths', () => {
 
     const cfg = readSublibConfig(root);
     const p = buildPaths(root, cfg);
-    expect(p['egak.js'][0]).toBe(path.join(egakSrc, 'index.ts'));
-    expect(p['egak.js/*'][0]).toBe(path.join(egakSrc, '*'));
+    const posix = (...s: string[]) => s.join('/');
+    expect(p['egak.js'][0]).toBe(posix('vendor','egak.js','src','index.ts'));
+    expect(p['egak.js/*'][0]).toBe(posix('vendor','egak.js','src','*'));
     // ugocas has no src -> maps to dir and wildcard under vendor/ugocas.js
-    expect(p['ugocas.js'][0]).toBe(ugocasDir);
-    expect(p['ugocas.js/*'][0]).toBe(path.join(ugocasDir, '*'));
+    expect(p['ugocas.js'][0]).toBe(posix('vendor','ugocas.js'));
+    expect(p['ugocas.js/*'][0]).toBe(posix('vendor','ugocas.js','*'));
   });
 
   it('generates tsconfig.sublib.json at repository root', () => {
@@ -73,8 +74,9 @@ describe('tsconfig_paths', () => {
     expect(out).toBe(expected);
     expect(fs.existsSync(expected)).toBe(true);
     const json = JSON.parse(fs.readFileSync(expected, 'utf-8'));
-    expect(json.compilerOptions.baseUrl).toBe(root);
+    expect(json.compilerOptions.baseUrl).toBe('.');
     expect(json.compilerOptions.preserveSymlinks).toBe(true);
     expect(Object.keys(json.compilerOptions.paths)).toContain('egak.js');
+    expect(json.compilerOptions.paths['egak.js'][0]).toBe('vendor/egak.js/src/index.ts');
   });
 });

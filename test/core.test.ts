@@ -42,7 +42,7 @@ exit 0
     const generated = path.join(cwd, 'tsconfig.sublib.json');
     expect(fs.existsSync(generated)).toBe(true);
     const json = JSON.parse(fs.readFileSync(generated, 'utf-8'));
-    expect(json.compilerOptions.baseUrl).toBe(cwd);
+    expect(json.compilerOptions.baseUrl).toBe('.');
     expect(Object.keys(json.compilerOptions.paths)).toContain('egak.js');
   });
   it('runs manual generation via "sublib gen"', () => {

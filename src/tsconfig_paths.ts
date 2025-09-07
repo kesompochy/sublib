@@ -18,14 +18,15 @@ export const buildPaths = (consumerRoot: string, cfg: SublibConfig): Record<stri
     const dir = path.resolve(consumerRoot, root, name);
     if (!fs.existsSync(dir)) continue;
     const src = fs.existsSync(path.join(dir, 'src')) ? path.join(dir, 'src') : dir;
-    const entries = [
+    const entriesAbs = [
       path.join(src, 'index.ts'),
       path.join(src, 'index.tsx'),
       path.join(src, 'index.js'),
       src,
     ].filter((p) => fs.existsSync(p) || p === src);
-    paths[name] = entries;
-    paths[`${name}/*`] = [path.join(src, '*')];
+    const rel = (p: string) => path.relative(consumerRoot, p).split(path.sep).join('/');
+    paths[name] = entriesAbs.map(rel);
+    paths[`${name}/*`] = [rel(path.join(src, '*'))];
   }
   return paths;
 };
@@ -35,7 +36,7 @@ export const generateForConsumer = (consumerRoot: string): string => {
   const paths = buildPaths(consumerRoot, cfg);
   const out = {
     compilerOptions: {
-      baseUrl: consumerRoot,
+      baseUrl: '.',
       preserveSymlinks: true,
       paths,
     },
