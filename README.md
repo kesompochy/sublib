@@ -23,8 +23,6 @@ Local subtree dev setup: git subtree + bundler integration.
 - Global link (dev):
   - `bun link --global` in this directory
   - Then use `sublib <add|pull|push> <name>`
-- Global install (after publishing):
-  - `bun add -g @kesompochy/sublib`
  - Manual regenerate:
    - `sublib gen` to (re)generate `./tsconfig.sublib.json` after editing `package.json > sublib.libs`
 
